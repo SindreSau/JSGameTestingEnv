@@ -12,8 +12,10 @@
       padding: 0;
       background-color: #eee;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     canvas {
@@ -24,12 +26,33 @@
     img {
       display: none;
     }
+
+    button {
+      min-width: fit-content;
+      padding: 10px 20px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      background-color: #fff;
+      /* center */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: block;
+    }
   </style>
 </head>
 
 <body>
+  <h1>Bounce the ball</h1>
   <img src="ball.png" id="imgBall">
+  <button id="btnStart">Start game</button>
   <canvas id="canvas"></canvas>
+  <ul class="instructions">
+    <h2>Instructions:</h2>
+    <li>Arrowkeys to move left and right</li>
+    <li>Bounce the ball as many times as possible to beat your own highscore</li>
+  </ul>
   <script src="index.js" type="module"></script>
 </body>
 

@@ -69,7 +69,12 @@ export default class Ball {
       this.speed.y = 0;
       this.speed.x = 0;
       this.game.gameOver = true;
+      this.remove();
     }
+  }
+
+  remove() {
+    this.game.gameObjects.splice(this.game.gameObjects.indexOf(this), 1);
   }
 }
 

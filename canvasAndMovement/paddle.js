@@ -31,7 +31,7 @@ export default class Paddle {
   draw(ctx) {
     /** @type {CanvasRenderingContext2D} */
     this.ctx = ctx;
-    this.ctx.fillStyle = 'red';
+    this.ctx.fillStyle = '#2fff00';
     this.ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 

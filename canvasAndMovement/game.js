@@ -9,21 +9,40 @@ export default class Game {
   }
 
   start() {
+    this.btnStart = document.getElementById('btnStart');
+    this.paddle;
+    this.ball;
     this.paddle = new Paddle(this);
-    this.ball = new Ball(this);
     this.scoreText = new Score(this);
     this.score = 0;
     this.scores = [];
     this.highScore = JSON.parse(localStorage.getItem('highScore')) || 0;
     this.highScoreText = new HighScore(this);
     this.gameOver = false;
+    new InputHandler(this.paddle);
 
-    this.gameObjects = [this.paddle, this.ball, this.scoreText];
+    // Start game on btn click or spacebar/enter
+    this.btnStart.addEventListener('click', () => {
+      this.startClicked();
+    });
+
+    addEventListener('keydown', (e) => {
+      if (e.key == ' ' || e.key == 'Enter') {
+        this.startClicked();
+      }
+    });
+
+    this.gameObjects = [this.paddle, this.scoreText];
 
     // Only paddle
     // this.gameObjects = [this.paddle];
+  }
 
-    new InputHandler(this.paddle);
+  startClicked() {
+    console.log('clicked start');
+    this.btnStart.style.display = 'none';
+    this.ball = new Ball(this);
+    this.gameObjects = [this.paddle, this.ball, this.scoreText];
   }
 
   update() {
@@ -33,7 +52,12 @@ export default class Game {
       //update highscore
       this.highScoreText.update();
 
-      if (confirm('Game over! Start over?')) this.start();
+      //reset score
+      this.score = 0;
+
+      //reset game
+      this.gameOver = false;
+      this.btnStart.style.display = 'block';
     }
   }
 
@@ -53,7 +77,7 @@ class Score {
     /** @type {CanvasRenderingContext2D} */
     this.ctx = ctx;
     this.ctx.font = `${this.game.gameWidth / 24}px Arial`;
-    this.ctx.fillStyle = 'red';
+    this.ctx.fillStyle = 'black';
     this.ctx.fillText(`Score: ${this.score}`, this.game.gameWidth / 100, this.game.gameWidth / 22);
   }
 
@@ -72,7 +96,7 @@ class HighScore {
     /** @type {CanvasRenderingContext2D} */
     this.ctx = ctx;
     this.ctx.font = `${this.game.gameWidth / 24}px Arial`;
-    this.ctx.fillStyle = 'red';
+    this.ctx.fillStyle = 'black';
     this.ctx.fillText(`High score: ${this.highScore}`, this.game.gameWidth / 100, this.game.gameWidth / 11);
   }
 

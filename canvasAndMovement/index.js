@@ -10,6 +10,7 @@ canvas.width = cWidth;
 canvas.height = cHeight;
 
 let game = new Game(cWidth, cHeight);
+
 game.start();
 
 let lastTime = 0;
