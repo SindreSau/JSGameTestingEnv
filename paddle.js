@@ -5,7 +5,7 @@ export default class Paddle {
     this.width = this.gameWidth / 6;
     this.height = this.gameHeight / 50;
 
-    this.maxSpeed = this.gameWidth / 80;
+    this.maxSpeed = this.gameWidth / 1000;
     this.speed = 0;
     this.acceleration = 0.2;
     this.direction = 0;
@@ -35,7 +35,7 @@ export default class Paddle {
     this.ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 
-  update() {
+  update(dt) {
     if (this.direction != 0) {
       // Acceleration
       this.speed += this.acceleration * this.direction;
@@ -50,7 +50,7 @@ export default class Paddle {
       }
     }
 
-    this.position.x += this.speed;
+    this.position.x += this.speed * dt;
 
     if (this.position.x < 0) {
       this.position.x = 0;

@@ -36,7 +36,7 @@ const gameLoop = (timeStamp) => {
   ctx.clearRect(0, 0, cWidth, cHeight);
 
   // Update position
-  game.update(ctx);
+  game.update(dt);
   game.draw(ctx);
 
   requestAnimationFrame(gameLoop);

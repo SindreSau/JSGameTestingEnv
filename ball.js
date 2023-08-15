@@ -16,8 +16,14 @@ export default class Ball {
     };
 
     this.speed = {
-      x: Math.random() * 2 - 1,
-      y: this.gameHeigth / 100,
+      // x: Math.random() * 2 - 1,
+      x: ((Math.random() * 2 - 1) * this.gameWidth) / 3000,
+      y: this.gameHeigth / 1000,
+    };
+
+    this.maxSpeed = {
+      x: this.gameWidth / 800,
+      y: this.gameHeigth / 800,
     };
   }
 
@@ -33,9 +39,13 @@ export default class Ball {
     );
   }
 
-  update() {
-    this.position.x += this.speed.x;
-    this.position.y += this.speed.y;
+  update(dt) {
+    this.position.x += this.speed.x * dt;
+    this.position.y += this.speed.y * dt;
+
+    // Clamp the speed to not exceed the max speed.
+    this.speed.x = Math.max(-this.maxSpeed.x, Math.min(this.maxSpeed.x, this.speed.x));
+    this.speed.y = Math.max(-this.maxSpeed.y, Math.min(this.maxSpeed.y, this.speed.y));
 
     // Checks wall hit left or right
     if (this.position.x + this.ballSize > this.gameWidth || this.position.x < 0) {

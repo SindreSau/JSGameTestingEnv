@@ -53,8 +53,8 @@ export default class Game {
     this.gameObjects = [this.paddle, this.ball, this.scoreText];
   }
 
-  update() {
-    this.gameObjects.forEach((ob) => ob.update());
+  update(dt) {
+    this.gameObjects.forEach((ob) => ob.update(dt));
 
     if (this.gameOver) {
       //update highscore
