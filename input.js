@@ -25,13 +25,17 @@
 
 //* GPT VERSION *//
 export default class InputHandler {
-  constructor(paddle) {
+  constructor(paddle, canvas) {
     this.paddle = paddle;
+    this.canvas = canvas;
 
     this.keyOrder = [];
 
     document.addEventListener('keydown', this.onKeyDown.bind(this));
     document.addEventListener('keyup', this.onKeyUp.bind(this));
+    this.canvas.addEventListener('touchstart', this.onTouchStart.bind(this));
+    this.canvas.addEventListener('touchend', this.onTouchEnd.bind(this));
+    this.canvas.addEventListener('touchcancel', this.onTouchEnd.bind(this));
   }
 
   onKeyDown(e) {
@@ -58,6 +62,40 @@ export default class InputHandler {
     this.keyOrder = this.keyOrder.filter((key) => key !== e.key);
 
     this.updatePaddleMovement();
+  }
+
+  // Touch controls - only inside of canvas
+  onTouchStart(e) {
+    // Move left if touch is on left side of canvas
+    if (e.touches[0].clientX < window.innerWidth / 2) {
+      // Remove previous occurrence of 'ArrowLeft'
+      this.keyOrder = this.keyOrder.filter((key) => key !== 'ArrowLeft');
+      // Add 'ArrowLeft' to the end of keyOrder
+      this.keyOrder.push('ArrowLeft');
+    }
+    // Move right if touch is on right side of canvas
+    else {
+      // Remove previous occurrence of 'ArrowRight'
+      this.keyOrder = this.keyOrder.filter((key) => key !== 'ArrowRight');
+      // Add 'ArrowRight' to the end of keyOrder
+      this.keyOrder.push('ArrowRight');
+    }
+
+    this.updatePaddleMovement();
+  }
+
+  onTouchEnd(e) {
+    // Remove the key that was released from keyOrder
+    this.keyOrder = this.keyOrder.filter((key) => key !== 'ArrowLeft');
+    this.keyOrder = this.keyOrder.filter((key) => key !== 'ArrowRight');
+
+    this.updatePaddleMovement();
+
+    // Prevent scrolling
+    e.preventDefault();
+
+    // Prevent mouse click
+    e.stopPropagation();
   }
 
   updatePaddleMovement() {

@@ -6,7 +6,9 @@ export default class Ball {
 
     this.game = game;
 
-    this.ballSize = 20;
+    // Size of ball in relation to gameWidth
+    this.ballSize = this.gameWidth / 20;
+    console.log((this.ballSize / this.gameWidth) * 100);
 
     this.position = {
       x: this.gameWidth / 2,
@@ -26,8 +28,8 @@ export default class Ball {
       this.image,
       this.position.x - this.ballSize / 2, //center
       this.position.y,
-      this.gameWidth / this.ballSize,
-      this.gameHeigth / this.ballSize
+      this.ballSize,
+      this.ballSize
     );
   }
 
@@ -48,7 +50,7 @@ export default class Ball {
     let bottomOfBall = this.position.y + this.ballSize;
     let leftSideOfBall = this.position.x - this.ballSize / 2;
     let rightSideOfBall = this.position.x + this.ballSize;
-    let topOfPaddle = this.game.paddle.position.y;
+    let topOfPaddle = this.game.paddle.position.y + this.game.paddle.height;
     let leftSideOfPaddle = this.game.paddle.position.x;
     let rightSideOfPaddle = this.game.paddle.position.x + this.game.paddle.width;
     let centerOfPaddle = this.game.paddle.position.x + this.game.paddle.width / 2;

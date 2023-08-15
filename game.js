@@ -3,9 +3,10 @@ import Ball from './ball.js';
 import InputHandler from './input.js';
 
 export default class Game {
-  constructor(gameWidth, gameHeight) {
+  constructor(gameWidth, gameHeight, canvas) {
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
+    this.canvas = canvas;
   }
 
   start() {
@@ -19,7 +20,8 @@ export default class Game {
     this.highScore = JSON.parse(localStorage.getItem('highScore')) || 0;
     this.highScoreText = new HighScore(this);
     this.gameOver = false;
-    new InputHandler(this.paddle);
+    new InputHandler(this.paddle, this.canvas);
+    this.ctx = document.querySelector('canvas').getContext('2d');
 
     // Start game on btn click or spacebar/enter
     this.btnStart.addEventListener('click', () => {
@@ -30,6 +32,12 @@ export default class Game {
       if (e.key == ' ' || e.key == 'Enter') {
         this.startClicked();
       }
+    });
+
+    // Start game on touchScreens with button
+    this.mobileStartButton = document.getElementById('mobileStartBtn');
+    this.mobileStartButton.addEventListener('click', () => {
+      this.startClicked();
     });
 
     this.gameObjects = [this.paddle, this.scoreText];
@@ -51,6 +59,9 @@ export default class Game {
     if (this.gameOver) {
       //update highscore
       this.highScoreText.update();
+
+      // Update the highscore display
+      this.highScore = JSON.parse(localStorage.getItem('highScore')) || 0;
 
       //reset score
       this.score = 0;
@@ -76,7 +87,7 @@ class Score {
   draw(ctx) {
     /** @type {CanvasRenderingContext2D} */
     this.ctx = ctx;
-    this.ctx.font = `${this.game.gameWidth / 24}px Arial`;
+    this.ctx.font = `${this.game.gameWidth / 28}px Arial`;
     this.ctx.fillStyle = 'black';
     this.ctx.fillText(`Score: ${this.score}`, this.game.gameWidth / 100, this.game.gameWidth / 22);
   }
@@ -95,13 +106,11 @@ class HighScore {
   draw(ctx) {
     /** @type {CanvasRenderingContext2D} */
     this.ctx = ctx;
-    this.ctx.font = `${this.game.gameWidth / 24}px Arial`;
     this.ctx.fillStyle = 'black';
     this.ctx.fillText(`High score: ${this.highScore}`, this.game.gameWidth / 100, this.game.gameWidth / 11);
   }
 
   update() {
-    console.log(this.game.score);
     this.game.scores = JSON.parse(localStorage.getItem('scores')) || [];
     this.game.scores.push(this.game.score);
     localStorage.setItem('scores', JSON.stringify(this.game.scores));
@@ -113,6 +122,9 @@ class HighScore {
 
       localStorage.setItem('scores', JSON.stringify(this.game.scores));
     }
+
+    //update highscore
+    this.highScore = this.game.scores.reduce((a, b) => Math.max(a, b), 0);
 
     localStorage.setItem('highScore', JSON.stringify(this.game.scores.reduce((a, b) => Math.max(a, b), 0)));
   }

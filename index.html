@@ -13,7 +13,6 @@
       background-color: #eee;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
@@ -21,6 +20,9 @@
     canvas {
       background-color: rgb(255, 255, 255);
       border: 1px solid #aaa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     img {
@@ -29,30 +31,68 @@
 
     button {
       min-width: fit-content;
-      padding: 10px 20px;
+      padding: 5px 10px;
       border: 1px solid #aaa;
       border-radius: 5px;
       background-color: #fff;
       /* center */
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
       display: block;
+    }
+
+    h2 {
+      font-size: .8rem;
+      text-align: center;
+    }
+
+    @media screen and (min-width: 600px) {
+      body {
+        justify-content: center;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+      }
+
+      ul {
+        font-size: 1rem;
+      }
+    }
+
+    #touch-controls {
+      margin: 10px;
+    }
+
+    #mobileStartBtn {
+      font-size: 1.2rem;
     }
   </style>
 </head>
 
 <body>
   <h1>Bounce the ball</h1>
+
   <img src="ball.png" id="imgBall">
-  <button id="btnStart">Start game</button>
-  <canvas id="canvas"></canvas>
-  <ul class="instructions">
-    <h2>Instructions:</h2>
-    <li>Arrowkeys to move left and right</li>
-    <li>Bounce the ball as many times as possible to beat your own highscore</li>
-  </ul>
+  <canvas id="canvas">
+    <button id="btnStart">Start game</button>
+  </canvas>
+  <div id="touch-controls">
+    <button id="mobileStartBtn">Start game</button>
+    <div class="touch-instructions">
+      <h2>Touch-controls</h2>
+      <p>Touch the screen to start the game</p>
+      <p>Touch the left side of screen to move left, and the right side of screen to move right</p>
+    </div>
+  </div>
+  <div id="keyboard-controls">
+    <h2>Keyboard-controls</h2>
+    <p>Press Spacebar or Enter to start the game</p>
+    <p>Use left arrow and right arrow to move paddle</p>
+  </div>
+
   <script src="index.js" type="module"></script>
 </body>
 
